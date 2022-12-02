@@ -1,4 +1,4 @@
-# buildspace DNS starter project
+# Polygon DNS starter project
 
 ### **Welcome 👋**
 
