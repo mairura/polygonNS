@@ -14,7 +14,7 @@ const TWITTER_HANDLE = 'BrynTeddy';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 //Domain i would be minting
 const tld = ".necks"; 
-const CONTRACT_ADDRESS= "0xbB1c215330329ecEDE16bf30F44aEedCc2CaB31E";
+const CONTRACT_ADDRESS= "0xc6610C62925676A5aFf188943Fe53aF875BE14e0";
 
 const App = () => {
 	const [mints, setMints] = useState([]);
