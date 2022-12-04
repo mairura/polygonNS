@@ -7,14 +7,17 @@ import contractAbi from './utils/contractABI.json';
 import polygonLogo from './assets/polygonlogo.png';
 import ethLogo from './assets/ethlogo.png';
 import { networks } from './utils/networks';
-// require("dotenv").config();
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Constants
-const TWITTER_HANDLE = 'BrynTeddy';
+const TWITTER_HANDLE = 'ngenidevs';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
+
 //Domain i would be minting
-const tld = ".necks"; 
-const CONTRACT_ADDRESS= "0xc6610C62925676A5aFf188943Fe53aF875BE14e0";
+const tld = ".plgn"; 
+const CONTRACT_ADDRESS= "0x6331fA5f77442b83fC74481D4dBf00a068DEf1B1";
 
 const App = () => {
 	const [mints, setMints] = useState([]);
@@ -48,7 +51,8 @@ const App = () => {
 			console.log("Connected", accounts[0]);
 			setCurrentAccount(accounts[0]);
 		}catch(error) {
-			console.log(error);
+			toast.error("Error connecting to metamask 😟");
+			console.log("Error connecting to metamask",error);
 		}
 	}
 
@@ -140,8 +144,9 @@ const App = () => {
 		}
 
 		//Calculate price based on length of domain
-		const price = domain.length === 3 ? "0.0005" : domain.length === 4 ? "0.0003" : "0.0001";
+		const price = domain.length === 3 ? "0.005" : domain.length === 4 ? "0.0003" : "0.0001";
 		console.log("Minting domain", domain, "with price", price);
+		toast.info("Minting...🏋️")
 		try{
 			const  {ethereum } = window;
 			if(ethereum) {
@@ -157,11 +162,13 @@ const App = () => {
 				//Check if the tx was successfully completed
 				if(receipt.status === 1) {
 					console.log("Domain minted check it out https://mumbai.polygonscan.com/tx/"+tx.hash);
+					toast.info("Domain minted 🥳");
 
 					tx = await contract.setRecord(domain, record);
 					await tx.wait();
 
 					console.log("Record set https://mumbai.polygonscan.com/tx/"+tx.hash);
+					toast.info("Record set 🎉");
 
 					  
 				// Call fetchMints after 2 seconds
@@ -178,6 +185,7 @@ const App = () => {
 			}
 		}catch(error){
 			console.log(error);
+			toast.error("Limited gas 😞");
 		}
 	}
 
@@ -218,6 +226,7 @@ const App = () => {
 	const updateDomain = async () => {
 		if (!record || !domain) { return }
 		setLoading(true);
+		toast.info("Updating domain 🤗")
 		console.log("Updating domain", domain, "with record", record);
 		  try {
 		  const { ethereum } = window;
@@ -229,6 +238,7 @@ const App = () => {
 			let tx = await contract.setRecord(domain, record);
 			await tx.wait();
 			console.log("Record set https://mumbai.polygonscan.com/tx/"+tx.hash);
+			toast.success("Updated domain 🥳");
 	  
 			fetchMints();
 			setRecord('');
@@ -364,7 +374,7 @@ const renderMints = () => {
 				<div className="header-container">
 					<header>
 						<div className="left">
-						<img className="logo" src={polygonLogo} />
+						<img className="logo" src={polygonLogo} alt="Logo"/>
 							<p className="title"> Fantom Name Service</p>
 							<p className="subtitle">We supply for the blockchain</p>
 						</div>
@@ -391,6 +401,18 @@ const renderMints = () => {
 						rel="noreferrer"
 					>{`built with 💕 @${TWITTER_HANDLE}`}</a>
 				</div>
+				<ToastContainer
+					position="top-right"
+					autoClose={5000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+				/>
+				<ToastContainer />
 			</div>
 		</div>
 	);
